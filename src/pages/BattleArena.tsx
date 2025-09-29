@@ -34,17 +34,27 @@ interface Evidence {
 
 const mockArguments = {
   prosecution: [
-    "Your Honor, the evidence clearly shows a violation of contractual obligations.",
-    "The defendant failed to meet the agreed-upon deadlines, causing significant damages.",
-    "Objection! The defense is misrepresenting the timeline of events.",
-    "Our financial records demonstrate substantial losses due to this breach."
+    "Your Honor, she said that she loves cold showers, not that she had a cold shower. If she had a cold shower, she would have said so!",
+    "That is an unrelated hypothetical to the dilemma at hand. To engage with such would be to engage with a fallacy!",
+    "Are you claiming my client is a liar?",
+    "My client has already stated that she bathed in hot water and then bathed in cold water. You failed to consider that both could be the case, yet didn't hesitate to say she's above deceptive imagery, looking wildly unprofessional.",
+    "You fail to consider the possibility that she took a hot shower, disliked it, and then took a cold shower to make up for it, thus only enjoying the cold shower.",
+    "Where is it stated that she knew that she disliked hot showers? Not only is that information trivial, it's also ignoring the possibility that she wanted to try out a hot shower to see if she still disliked hot showers.",
+    "That's... not how it works! Cold water doesn't unfog mirrors that way!",
   ],
   defense: [
-    "Your Honor, my client acted in good faith throughout this agreement.",
-    "The delays were due to circumstances beyond our client's control.",
-    "Objection! The prosecution is ignoring force majeure clauses in the contract.",
-    "The alleged damages are greatly exaggerated and lack proper documentation."
-  ]
+    "Your Honor, even if she does enjoy cold showers, would it not be contradictory for me to say 'I love mustard' and then show a picture of a bottle of ketchup?",
+    "You can't object on the grounds of relevancy here. The principle of both situations is the same. I'm just illustrating the situation to prove that it's deceptive.",
+    "I'm simply saying one can see in Exhibit A that she is not above attaching deceptive imagery to her statements. Let the record reflect that YOU brought up the word 'liar.'",
+    "At no point did she imply that she bathed in hot water. Her statement only implies that her water transitioned from hot to cold. I must say, no shower control system I've ever encountered starts on hot and moves to cold.",
+    "If she knows that she loves cold showers, why on earth would she start with a hot shower? There's no way she'd wait the time required for the water to heat up if she knew she disliked hot showers!",
+    "If it was hot then cold, wouldn't the cold water have unfogged the mirror? Yes it would! The cold would have caused the condensation to evaporate!",
+  ],
+  judge: [
+    "*GAVEL STRIKE* Order! Order in the court!",
+    "That is enough. The prosecution has a point, but neither side has enough evidence to support their claims.",
+    "This trial shall be postponed until sufficient evidence has been gathered. Court is adjourned!",
+  ],
 };
 
 const mockEvidence: Evidence[] = [
