@@ -57,6 +57,22 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Legal Battle Arena Colors
+        prosecution: {
+          DEFAULT: "hsl(var(--prosecution))",
+          foreground: "hsl(var(--prosecution-foreground))",
+          glow: "hsl(var(--prosecution-glow))",
+        },
+        defense: {
+          DEFAULT: "hsl(var(--defense))",
+          foreground: "hsl(var(--defense-foreground))",
+          glow: "hsl(var(--defense-glow))",
+        },
+        judge: {
+          DEFAULT: "hsl(var(--judge))",
+          foreground: "hsl(var(--judge-foreground))",
+          glow: "hsl(var(--judge-glow))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
