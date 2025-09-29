@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Waveform } from '@/components/Waveform';
 import { cn } from '@/lib/utils';
 
 interface AttorneyCharacterProps {
@@ -6,6 +7,7 @@ interface AttorneyCharacterProps {
   image: string;
   name: string;
   isActive: boolean;
+  isSpeaking?: boolean;
   animationState: 'idle' | 'speaking' | 'objecting' | 'thinking' | 'celebrating';
 }
 
@@ -14,6 +16,7 @@ export const AttorneyCharacter = ({
   image, 
   name, 
   isActive, 
+  isSpeaking = false,
   animationState 
 }: AttorneyCharacterProps) => {
   const [showObjection, setShowObjection] = useState(false);
@@ -29,6 +32,7 @@ export const AttorneyCharacter = ({
   const getCharacterEffect = () => {
     if (animationState === 'objecting') return 'scale-110 animate-objection-shake';
     if (animationState === 'celebrating') return 'scale-105';
+    if (isSpeaking) return 'scale-105 shadow-[0_0_30px_rgba(212,175,55,0.6)]';
     if (isActive) return 'scale-105';
     return 'scale-100';
   };
@@ -58,7 +62,10 @@ export const AttorneyCharacter = ({
         <img 
           src={image} 
           alt={`${name} - ${side} attorney`}
-          className="w-48 h-72 object-cover"
+          className={cn(
+            "w-48 h-72 object-cover transition-all duration-200",
+            isSpeaking && animationState === 'speaking' && "animate-mouth-speak"
+          )}
         />
         
         {/* Active Indicator */}
@@ -71,9 +78,17 @@ export const AttorneyCharacter = ({
           )} />
         )}
 
+        {/* Speaking Waveform */}
+        {isSpeaking && animationState === 'speaking' && (
+          <div className="absolute top-2 right-2 bg-black/50 rounded px-2 py-1">
+            <Waveform isActive={isSpeaking} side={side} size="sm" />
+          </div>
+        )}
+
         {/* Animation State Indicator */}
         <div className="absolute bottom-2 left-2 px-2 py-1 bg-black/50 rounded text-xs text-white">
-          {animationState === 'speaking' && '💬 Speaking'}
+          {isSpeaking && animationState === 'speaking' && '🎤 Speaking'}
+          {!isSpeaking && animationState === 'speaking' && '💬 Ready'}
           {animationState === 'objecting' && '⚡ Objecting'}
           {animationState === 'thinking' && '🤔 Thinking'}
           {animationState === 'celebrating' && '🎉 Victory'}

@@ -1,14 +1,30 @@
 import { useState, useEffect } from 'react';
+import { Pause, Play, RotateCcw } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Waveform } from '@/components/Waveform';
 import { cn } from '@/lib/utils';
 
 interface SpeechBubbleProps {
   text: string;
   side: 'prosecution' | 'defense';
   isVisible: boolean;
+  isSpeaking?: boolean;
   onComplete?: () => void;
+  onPauseSpeech?: () => void;
+  onResumeSpeech?: () => void;
+  onReplaySpeech?: () => void;
 }
 
-export const SpeechBubble = ({ text, side, isVisible, onComplete }: SpeechBubbleProps) => {
+export const SpeechBubble = ({ 
+  text, 
+  side, 
+  isVisible, 
+  isSpeaking = false,
+  onComplete,
+  onPauseSpeech,
+  onResumeSpeech,
+  onReplaySpeech
+}: SpeechBubbleProps) => {
   const [displayedText, setDisplayedText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -53,6 +69,32 @@ export const SpeechBubble = ({ text, side, isVisible, onComplete }: SpeechBubble
         )}
       />
       
+      {/* Speech Bubble Header */}
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center space-x-2">
+          {isSpeaking && <Waveform isActive={isSpeaking} side={side} size="sm" />}
+          {isSpeaking && <span className="text-xs text-muted-foreground">Speaking...</span>}
+        </div>
+        
+        <div className="flex items-center space-x-1">
+          {onPauseSpeech && isSpeaking && (
+            <Button variant="ghost" size="sm" onClick={onPauseSpeech} className="h-6 w-6 p-0">
+              <Pause className="w-3 h-3" />
+            </Button>
+          )}
+          {onResumeSpeech && !isSpeaking && (
+            <Button variant="ghost" size="sm" onClick={onResumeSpeech} className="h-6 w-6 p-0">
+              <Play className="w-3 h-3" />
+            </Button>
+          )}
+          {onReplaySpeech && (
+            <Button variant="ghost" size="sm" onClick={onReplaySpeech} className="h-6 w-6 p-0">
+              <RotateCcw className="w-3 h-3" />
+            </Button>
+          )}
+        </div>
+      </div>
+
       <div className="text-foreground leading-relaxed">
         {displayedText}
         {currentIndex < text.length && (

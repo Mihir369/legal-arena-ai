@@ -96,10 +96,20 @@ export default {
             height: "0",
           },
         },
+        "wave": {
+          "0%, 100%": { height: "8px" },
+          "50%": { height: "20px" }
+        },
+        "mouth-speak": {
+          "0%, 100%": { transform: "scaleY(1)" },
+          "50%": { transform: "scaleY(0.7)" }
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "wave": "wave 0.6s ease-in-out infinite",
+        "mouth-speak": "mouth-speak 0.8s ease-in-out infinite"
       },
     },
   },

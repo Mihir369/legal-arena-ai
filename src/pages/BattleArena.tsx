@@ -7,6 +7,8 @@ import { SpeechBubble } from '@/components/SpeechBubble';
 import { ConfidenceMeter } from '@/components/ConfidenceMeter';
 import { EvidenceStack } from '@/components/EvidenceCard';
 import { BattleControls } from '@/components/BattleControls';
+import { VoiceControlPanel } from '@/components/VoiceControlPanel';
+import { useSpeech } from '@/hooks/useSpeech';
 import prosecutionImage from '@/assets/prosecution-attorney.jpg';
 import defenseImage from '@/assets/defense-attorney.jpg';
 
@@ -71,6 +73,17 @@ export const BattleArena = () => {
   const [speed, setSpeed] = useState(1);
   const [argumentIndex, setArgumentIndex] = useState(0);
   const [documentUploaded, setDocumentUploaded] = useState(false);
+  
+  const { 
+    settings: voiceSettings, 
+    speechState, 
+    speak, 
+    pause: pauseSpeech, 
+    resume: resumeSpeech, 
+    stop: stopSpeech,
+    updateSettings: updateVoiceSettings,
+    isSupported: isVoiceSupported
+  } = useSpeech();
 
   const prosecutionEvidence = mockEvidence.filter(e => e.side === 'prosecution');
   const defenseEvidence = mockEvidence.filter(e => e.side === 'defense');
@@ -88,6 +101,16 @@ export const BattleArena = () => {
     setIsPlaying(true);
     setArgumentIndex(0);
   }, [documentUploaded]);
+
+  // Handle speech when argument changes
+  useEffect(() => {
+    if (battleState.currentArgument && battleState.currentSpeaker && voiceSettings.enabled) {
+      const speaker = battleState.currentSpeaker as 'prosecution' | 'defense';
+      if (speaker === 'prosecution' || speaker === 'defense') {
+        speak(battleState.currentArgument, speaker);
+      }
+    }
+  }, [battleState.currentArgument, battleState.currentSpeaker, voiceSettings.enabled, speak]);
 
   const nextArgument = useCallback(() => {
     if (!isPlaying || battleState.isComplete) return;
@@ -219,6 +242,7 @@ export const BattleArena = () => {
                   image={prosecutionImage}
                   name="Arjun Sharma"
                   isActive={battleState.currentSpeaker === 'prosecution'}
+                  isSpeaking={speechState.isSpeaking && speechState.currentSpeaker === 'prosecution'}
                   animationState={getAnimationState('prosecution')}
                 />
                 
@@ -255,6 +279,14 @@ export const BattleArena = () => {
                       text={battleState.currentArgument}
                       side={battleState.currentSpeaker as 'prosecution' | 'defense'}
                       isVisible={!!battleState.currentArgument}
+                      isSpeaking={speechState.isSpeaking && speechState.currentSpeaker === battleState.currentSpeaker}
+                      onPauseSpeech={pauseSpeech}
+                      onResumeSpeech={resumeSpeech}
+                      onReplaySpeech={() => {
+                        if (battleState.currentSpeaker && battleState.currentArgument) {
+                          speak(battleState.currentArgument, battleState.currentSpeaker as 'prosecution' | 'defense');
+                        }
+                      }}
                     />
                   </div>
                 )}
@@ -311,6 +343,7 @@ export const BattleArena = () => {
                   image={defenseImage}
                   name="Priya Singh"
                   isActive={battleState.currentSpeaker === 'defense'}
+                  isSpeaking={speechState.isSpeaking && speechState.currentSpeaker === 'defense'}
                   animationState={getAnimationState('defense')}
                 />
                 
@@ -329,6 +362,18 @@ export const BattleArena = () => {
           </div>
         )}
       </div>
+
+      {/* Voice Control Panel */}
+      <VoiceControlPanel
+        enabled={voiceSettings.enabled}
+        volume={voiceSettings.volume}
+        speed={voiceSettings.speed}
+        isSpeaking={speechState.isSpeaking}
+        isSupported={isVoiceSupported}
+        onToggleEnabled={() => updateVoiceSettings({ enabled: !voiceSettings.enabled })}
+        onVolumeChange={(volume) => updateVoiceSettings({ volume })}
+        onSpeedChange={(speed) => updateVoiceSettings({ speed })}
+      />
     </div>
   );
 };
